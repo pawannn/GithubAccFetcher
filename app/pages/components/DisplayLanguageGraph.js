@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import ReactApexChart from 'react-apexcharts';
 import axios from 'axios';
 
-const DisplayGraph = ({repo_name, owner_name}) => {
+const DisplayLangaugeGraph = ({repo_name, owner_name}) => {
   const [chartData, setChartData] = useState({
     series: [44, 55, 13, 43, 22],
     options: {
@@ -58,4 +58,4 @@ const DisplayGraph = ({repo_name, owner_name}) => {
   );
 };
 
-export default DisplayGraph;
+export default DisplayLangaugeGraph;

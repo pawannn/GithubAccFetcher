@@ -12,35 +12,40 @@ const Main = () => {
   const [userData, setUserData] = useState();
   const [repoData, setRepoData] = useState();
 
+  const fetchData = async (username) => {
+    username === "" ? username : "pawannn";
+    axios.get(`https://api.github.com/users/${username}`)
+    .then((userResponse) => {
+      setUserData(userResponse.data);
+      return axios.get(`https://api.github.com/users/${username}/repos`);
+    })
+    .then((repoResponse) => {
+      setRepoData(repoResponse.data);
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+  }
+
   //Function to handle the submit button
   const handleSubmit = async () => {
     try {
       localStorage.setItem("username", username);
-
-      const userResponse = await axios.get(`https://api.github.com/users/${username}`);
-      setUserData(userResponse.data);
-
-      const repoResponse = await axios.get(`https://api.github.com/users/${username}/repos`);
-      setRepoData(repoResponse.data);
-    } catch (error) {
+      fetchData(username);
+    }
+    catch (error) {
       console.error("Error fetching data:", error);
     }
   };
 
   useEffect(() => {
     const username = localStorage.getItem("username") || "pawannn";
-
-    axios.get(`https://api.github.com/users/${username}`)
-      .then((response) => setUserData(response.data))
-      .catch((error) => console.error("Error fetching user data:", error));
-
-    axios.get(`https://api.github.com/users/${username}/repos`)
-      .then((response) => setRepoData(response.data))
-      .catch((error) => console.error("Error fetching repo data:", error));
+    fetchData(username);
     }, []);
 
   return (
     <div className="main">
+
       <div className="search">
         <Image
           style={{ cursor: "pointer" }}
@@ -52,21 +57,25 @@ const Main = () => {
           width={80}
           height={45}
         />
+        
         <input
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              handleSubmit();
-            }
-          }}
-          type="text"
-          placeholder="Enter Github Username"
-          onChange={(e) => setUsername(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleSubmit();
+          }
+        }}
+        type="text"
+        placeholder="Enter Github Username"
+        onChange={(e) => setUsername(e.target.value)}
         />
+        
         <button onClick={handleSubmit}>Search</button>
       </div>
+
       <div className="displayUserData">
         {userData && <DisplayUserData userData={userData} />}
       </div>
+
       <div className="displayRepoData">
         {repoData && <DisplayRepoData repoData={repoData} />}
       </div>

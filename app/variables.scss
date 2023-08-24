@@ -1,0 +1,12 @@
+$row-center-element: (
+    display: flex,
+    justify-content: center,
+    align-items: center
+);
+
+$column-center-element: (
+    display: flex,
+    flex-direction: column,
+    justify-content: center,
+    align-items: center
+);

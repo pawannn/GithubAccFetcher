@@ -13,6 +13,7 @@ const Contributors = ({contributor_url}) => {
     useEffect(() => {
         fetch_contributors();
     }, []);
+    
     return (
         <div className='contributors-avatar'>
             {conntributorData?.map((contributor, index) => (

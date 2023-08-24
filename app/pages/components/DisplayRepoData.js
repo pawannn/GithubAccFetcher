@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import DisplayGraph from "./DisplayGraph";
+import DisplayLangaugeGraph from "./DisplayLanguageGraph";
 import DisplayStarChart from "./DisplayStarChart";
 import DisplayForkChart from "./DisplayForkChart";
 import Contributors from "./contributors";
@@ -82,7 +82,7 @@ const DisplayRepoData = ({ repoData }) => {
                 </div>
                 <div className="graph-details">
                   <h3>Languages</h3>
-                  <DisplayGraph
+                  <DisplayLangaugeGraph
                     repo_name={repo?.name}
                     owner_name={repo?.owner.login}
                   />
@@ -94,7 +94,6 @@ const DisplayRepoData = ({ repoData }) => {
       )
       }
       
-
       <div className="pagination">
         <button
           disabled={countPage === 1}
