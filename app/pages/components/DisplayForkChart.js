@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useMemo } from "react";
 import ReactApexChart from "react-apexcharts";
 
-const DisplayStarChart = ({ reposData }) => {
+const DisplayForkChart = ({ reposData }) => {
   const [chartData, setChartData] = useState({
     series: [
       {
-        name: "Stared Repos",
+        name: "Forked Repos",
         data: [2.3, 3.1, 4.0, 10.1, 4.0, 3.6, 3.2, 2.3, 1.4, 0.8, 0.5, 0.2],
       },
     ],
@@ -83,7 +83,7 @@ const DisplayStarChart = ({ reposData }) => {
         },
       },
       title: {
-        text: "Stared Repos",
+        text: "Forked Repos",
         floating: true,
         offsetY: 330,
         align: "center",
@@ -102,12 +102,12 @@ const DisplayStarChart = ({ reposData }) => {
     return reposData.map((item) => item.name);
   }, [reposData]);
 
- const star_count = useMemo(() => {
+ const fork_count = useMemo(() => {
     if (!reposData || !Array.isArray(reposData)) {
       return [];
     }
 
-    return reposData.map((item) => item.stargazers_count);
+    return reposData.map((item) => item.forks);
   }, [reposData]);
   const newArray = repo_name?.map((name) => name?.slice(0, 4) + "...");
 
@@ -117,7 +117,7 @@ const DisplayStarChart = ({ reposData }) => {
       series: [
         {
           name: "Stars",
-          data: star_count,
+          data: fork_count,
         },
       ],
       options: {
@@ -128,7 +128,7 @@ const DisplayStarChart = ({ reposData }) => {
         },
       },
     });
-  }, [star_count, repo_name]);
+  }, [fork_count, repo_name]);
 
   return (
     <div className="chart">
@@ -142,4 +142,4 @@ const DisplayStarChart = ({ reposData }) => {
   );
 };
 
-export default DisplayStarChart;
+export default DisplayForkChart;

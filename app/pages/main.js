@@ -3,34 +3,41 @@ import DisplayUserData from "./components/DisplayUserData";
 import DisplayRepoData from "./components/DisplayRepoData";
 import Image from "next/image";
 import githublogo from "../Assets/github.png";
+import axios from 'axios';
 
 const Main = () => {
-  const [username, setUsername] = useState("iamshaunjp");
+
+  //State variables for managing user and repository data
+  const [username, setUsername] = useState("pawannn");
   const [userData, setUserData] = useState();
   const [repoData, setRepoData] = useState();
 
-  const handleSubmit = () => {
-    localStorage.setItem("username", username);
-    fetch(`https://api.github.com/users/${username}`)
-      .then((response) => response.json())
-      .then((userResponse) => setUserData(userResponse));
+  //Function to handle the submit button
+  const handleSubmit = async () => {
+    try {
+      localStorage.setItem("username", username);
 
-    fetch(`https://api.github.com/users/${username}/repos`)
-      .then((response) => response.json())
-      .then((repoResponse) => setRepoData(repoResponse));
+      const userResponse = await axios.get(`https://api.github.com/users/${username}`);
+      setUserData(userResponse.data);
+
+      const repoResponse = await axios.get(`https://api.github.com/users/${username}/repos`);
+      setRepoData(repoResponse.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {
-    const username = localStorage.getItem("username");
+    const username = localStorage.getItem("username") || "pawannn";
 
-    fetch(`https://api.github.com/users/${username ?? "iamshaunjp"}`)
-      .then((response) => response.json())
-      .then((userResponse) => setUserData(userResponse));
+    axios.get(`https://api.github.com/users/${username}`)
+      .then((response) => setUserData(response.data))
+      .catch((error) => console.error("Error fetching user data:", error));
 
-    fetch(`https://api.github.com/users/${username ?? "iamshaunjp"}/repos`)
-      .then((response) => response.json())
-      .then((repoResponse) => setRepoData(repoResponse));
-  }, []);
+    axios.get(`https://api.github.com/users/${username}/repos`)
+      .then((response) => setRepoData(response.data))
+      .catch((error) => console.error("Error fetching repo data:", error));
+    }, []);
 
   return (
     <div className="main">
@@ -48,7 +55,6 @@ const Main = () => {
         <input
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              console.log("Enter key pressed");
               handleSubmit();
             }
           }}

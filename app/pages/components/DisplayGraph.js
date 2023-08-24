@@ -37,7 +37,6 @@ const DisplayGraph = ({repo_name, owner_name}) => {
     useEffect(() => {
         axios.get(`${baseurl}repos/${owner_name}/${repo_name}/languages`).then((response) => {
             setLanguages(response?.data);
-            console.log(response?.data);
         });
     }, []);
 

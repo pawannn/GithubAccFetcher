@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import DisplayGraph from "./DisplayGraph";
 import DisplayStarChart from "./DisplayStarChart";
+import DisplayForkChart from "./DisplayForkChart";
 import Contributors from "./contributors";
 import Image from "next/image";
 import Star from "../../Assets/star.png";
 import Calender from "../../Assets/calender.png";
+import Fork from "../../Assets/fork.png";
 
 const DisplayRepoData = ({ repoData }) => {
   const [openRepoIndex, setOpenRepoIndex] = useState(null);
   const [countPage, setCountPage] = useState(1);
   const [repoList, setRepoList] = useState();
+  const [selectedAnalysis, setSelectedAnalysis] = useState('star');
 
   const totalPage = Math.ceil(repoData.length / 5);
-  const totalCount = repoData.length;
 
   const toggleRepo = (index) => {
     if (openRepoIndex === index) {
@@ -49,12 +51,15 @@ const DisplayRepoData = ({ repoData }) => {
                     width={20}
                     height={20}
                   />
-            
-                  <h2>{repo?.created_at?.slice(0, 10)}</h2>
+                  <p>{repo?.created_at?.slice(0, 10)}</p>
                 </div>
                 <div className="item">
                   <Image src={Star} alt="star icon" width={20} height={20} />
-                  <h3>{repo?.stargazers_count}</h3>
+                  <p>{repo?.stargazers_count}</p>
+                </div>
+                <div className="item">
+                  <Image src={Fork} alt="fork icon" width={20} height={20} />
+                  <p>{repo?.forks}</p>
                 </div>
               </div>
             </div>
@@ -120,8 +125,20 @@ const DisplayRepoData = ({ repoData }) => {
         </button>
       </div>
 
-      <div className="stared-repo-analysis">
-        <DisplayStarChart reposData={repoData} />
+      <div className="repo-analysis">
+
+        <label>
+        <select value={selectedAnalysis} onChange={() => {setSelectedAnalysis(event.target.value);}}>
+            <option value="star">Star Repo Analysis</option>
+            <option value="fork">Fork Repo Analysis</option>
+          </select>
+        </label>
+
+        {selectedAnalysis === 'star' ? (
+          <DisplayStarChart reposData={repoData} />
+        ) : (
+          <DisplayForkChart reposData={repoData} />
+        )}
       </div>
     </div>
   );
